@@ -1,0 +1,55 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+# Complete the connectedCell function below.
+def dfs(row, column, l, v):
+    d = 1
+    leng=len(l[0])
+    v.append([row, column])
+    row_vector = [0,1,-1,0,1,-1,1,-1]
+    column_vector = [1,0,0,-1,1,-1,-1,1]
+    m = []
+    for i in range(0, len(row_vector)):
+        r = row + row_vector[i]
+        c = column_vector[i] + column
+        if r >= 0 and r < len(l) and c >= 0 and c < leng  :
+            # print(row+row_vector[i],column_vector[i]+column)
+            if l[r][c] == 1:
+                print()
+                m.append([r, c])
+        for i in m:
+            if i not in v:
+                d = d + dfs(r, c, l, v)
+    return d
+
+def connectedCell(matrix):
+    m=[]
+    v=[]
+    for i in range(0,len(matrix)):
+        for j in range(0,len(matrix[0])):
+            if matrix[i][j]==1:
+                m.append(dfs(i,j,matrix,v))
+    return max(m)
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input())
+
+
+    m = int(input())
+
+    matrix = []
+
+    for _ in range(n):
+        matrix.append(list(map(int, input().rstrip().split())))
+
+    result = connectedCell(matrix)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
